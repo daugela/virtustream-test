@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 import re
 
 import config #Local config file
@@ -15,7 +15,7 @@ def recursion_fib(n):
 
 @app.route("/")
 def hello():
-	return "Hello World!"
+	return render_template('home.html')
 
 @app.route('/numbers/<input>') #Using string format instead of int here - to be able to accept everything: numers, negatives and other stuff (to match the Flask route)
 def api(input):
