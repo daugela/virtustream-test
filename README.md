@@ -36,3 +36,50 @@ This will start accepting requests under http://yourhostname-or-ip:5000 (5000 po
 
 ## Deploy to production under apache
 
+Install apache and other dependencies    
+Be sure to deploy wsgi module to run python apps (I was running Python3)  
+
+`sudo apt-get install apache2`  
+`sudo apt-get install python-setuptools`  
+`sudo apt-get install libapache2-mod-wsgi-py3`  
+
+Use below apache configuration
+
+```
+#Listen for specific port if necessary
+Listen 8000
+<VirtualHost *:8000>
+	
+	#Change your email
+	ServerAdmin andrius.daugela@gmail.com
+
+	# Configure your hostname
+	ServerName 46.101.202.234
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	WSGIDaemonProcess virtusapp user=www-data group=www-data threads=5
+	WSGIProcessGroup virtusapp
+
+	#
+	# Adjust directories below according to your environment
+	#
+
+	WSGIScriptAlias / /home/andrius/www-virtustream/wrapper.wsgi
+
+	<Directory /home/andrius/www-virtustream>
+		Require all granted
+	</Directory>
+
+	<Directory /home/andrius/www-virtustream/>
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	<Files wrapper.wsgi>     
+		Order allow,deny
+		Allow from all
+	</Files>
+
+</VirtualHost>
+```
