@@ -3,7 +3,10 @@ import re
 
 import config #Local config file
 
-app = Flask(__name__)
+#Create app factory (mainly for testing purposes)
+def create_app():
+	app = Flask(__name__)
+	return app
 
 # Simplest form from stack overflow
 def recursion_fib(n):
@@ -13,10 +16,15 @@ def recursion_fib(n):
 	else:
 		return(recursion_fib(n-1) + recursion_fib(n-2))
 
+#Create app instance
+app = create_app()
+
+#Main page
 @app.route("/")
 def hello():
 	return render_template('home.html')
 
+#API functionality
 @app.route('/numbers/<input>') #Using string format instead of int here - to be able to accept everything: numers, negatives and other stuff (to match the Flask route)
 def api(input):
 	#Check the input for numbers with optional minus in the beginning

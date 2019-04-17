@@ -9,6 +9,11 @@ Clone this repo
 
 `git clone https://github.com/daugela/virtustream-test.git`
 
+
+Rename (optional - See apache conf)
+
+`mv virtustream-test www-virtustream`
+
 Go inside
 
 `cd virtustream-test`
@@ -43,7 +48,7 @@ Be sure to deploy wsgi module to run python apps (I was running Python3)
 `sudo apt-get install python-setuptools`  
 `sudo apt-get install libapache2-mod-wsgi-py3`  
 
-Use below apache configuration
+Use below sample file for Apache configuration
 
 ```
 #Listen for specific port if necessary
@@ -51,10 +56,10 @@ Listen 8000
 <VirtualHost *:8000>
 	
 	#Change your email
-	ServerAdmin andrius.daugela@gmail.com
+	ServerAdmin name@example.com
 
 	# Configure your hostname
-	ServerName 46.101.202.234
+	ServerName yourhostname-or-ip
 
 	ErrorLog ${APACHE_LOG_DIR}/error.log
 	CustomLog ${APACHE_LOG_DIR}/access.log combined
@@ -65,13 +70,13 @@ Listen 8000
 	# Adjust directories below according to your environment
 	#
 
-	WSGIScriptAlias / /home/andrius/www-virtustream/wrapper.wsgi
+	WSGIScriptAlias / /home/user/www-virtustream/wrapper.wsgi
 
-	<Directory /home/andrius/www-virtustream>
+	<Directory /home/user/www-virtustream>
 		Require all granted
 	</Directory>
 
-	<Directory /home/andrius/www-virtustream/>
+	<Directory /home/user/www-virtustream/>
 		Order allow,deny
 		Allow from all
 	</Directory>
@@ -83,3 +88,19 @@ Listen 8000
 
 </VirtualHost>
 ```
+
+## Test minimal cases for viable API
+
+3 minimal tests are designed in minimal_test.py:
+
++ Check if 200 OK response code is returned
++ Check if expected number of Fibonacci numbers is returned
++ Check if expected error message is returned for intentional bad request
+
+### Run test with:
+
+`pytest`
+
+Expected result (1 test file with 3 test cases completely passed):
+
+`===1 passed in 0.10 seconds===`
